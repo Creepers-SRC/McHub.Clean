@@ -78,7 +78,7 @@ public class ArgsParser {
 			}
 			Variables.zero = 0;
 		}
-		FileParser.Parser();
+		//FileParser.Parser();
 	return;	
 	}
 }

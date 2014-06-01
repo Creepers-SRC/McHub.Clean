@@ -11,6 +11,13 @@ import com.CreepersHelp.Start;
 public class Variables {
 	String version = "R1.3Beta";
 	String newLine = System.getProperty("line.separator");
+	final String[] URLNames = new String[5];
+	final String[] website = new String[5];
+	public int BungeeSize;
+	public int BukkitSize;
+	public int SpigotSize;
+	public int VanillaSize;
+	File[] Names = new File[8];
 	int zero = 0;
 	boolean bhelp = false;
 	boolean bnoconsole = false;
@@ -19,7 +26,7 @@ public class Variables {
 	boolean bdefaults = false;
 	boolean brestart = false;
 	int MinJava = 7;
-	double JavaVer = 61.0D;
+	double JavaVer = 51.0D;
 	String App = "McHubz";
 	boolean binfof = false;
 	File pluginsdir = new File("PluginsDir");
@@ -27,6 +34,7 @@ public class Variables {
 	File jardir = new File("jar");
 	boolean binfos = false;
 	boolean debug = false;
+	int kk = 0;
 	boolean zbhelp = false;
 	String os = System.getProperty("os.name");
 	com.CreepersHelp.ArgsParser ArgsParser = new com.CreepersHelp.ArgsParser();
@@ -47,6 +55,14 @@ public class Variables {
 				   "--InfoS      |   Will Print debuging information(to screen)"+newLine+"" +
 				   "~~~~~~~~~~~~~|    Then will exit"+newLine+"" +
 				   "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="+newLine+"" +
-				   "You are running product version: " + version + ""+newLine+"On OS: "+ os +				   
-				   ""+newLine+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="+newLine+"");
+				   "You are running product version: " + version + ""+newLine+"On OS: "+ os + "" + newLine +				   
+				   "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="+newLine+"");
+	 String Web1 = "http://dl.bukkit.org/latest-dev/craftbukkit.jar";
+	 String Web2 = "http://ci.md-5.net/job/Spigot/lastSuccessfulBuild/artifact/Spigot-Server/target/spigot.jar";
+	 String Web3 = "http://ci.md-5.net/job/BungeeCord/lastSuccessfulBuild/artifact/bootstrap/target/BungeeCord.jar";
+	 String Web4 = "http://minecraft.net/download/minecraft_server.jar";
+	 boolean finishedSpigot=false;
+	 boolean finishedBukkit=false;
+	 boolean finishedBungee=false;
+	 boolean finishedVanilla=false;
 }
