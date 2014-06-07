@@ -1,5 +1,7 @@
 package com.CreepersHelp;
 
+import java.io.IOException;
+
 import com.CreepersHelp.Variables;
 
 @SuppressWarnings("unused")
@@ -11,7 +13,7 @@ public class ArgsParser {
 	static com.CreepersHelp.Start Start  = new com.CreepersHelp.Start();
 	
 	public void Parser(String[] args) 
-			throws InterruptedException 
+			throws InterruptedException, IOException 
 	{
 		if (args.length!=0) {
 			while(Variables.zero<args.length&&(Variables.zbhelp==false)){
@@ -78,7 +80,7 @@ public class ArgsParser {
 			}
 			Variables.zero = 0;
 		}
-		//FileParser.Parser();
+		FileParser.Parser();
 	return;	
 	}
 }

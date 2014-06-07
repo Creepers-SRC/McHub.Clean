@@ -40,7 +40,7 @@ public class Variables {
 	com.CreepersHelp.ArgsParser ArgsParser = new com.CreepersHelp.ArgsParser();
 	com.CreepersHelp.FileParser FileParser = new com.CreepersHelp.FileParser();
 	com.CreepersHelp.Start Start  = new com.CreepersHelp.Start();
-	String ServerArgs = "-d64 -DJINTEGRA_NATIVE_MODE -DJINTEGRA_COINIT_VALUE=0 -Dsun.io.useCanonCaches=false -Djline.terminal=jline.UnsupportedTerminal -XX:ThreadPriorityPolicy=42 -XX:CompileThreshold=1500 -XX:+TieredCompilation -XX:TargetSurvivorRatio=90 -XX:MaxTenuringThreshold=15 -XX:+UnlockExperimentalVMOptions -XX:+UseAdaptiveGCBoundary -XX:+UseGCOverheadLimit -XX:+UseBiasedLocking -Xnoclassgc -Xverify:none -XX:UseSSE=8 -XX:+UseThreadPriorities -Djava.net.preferIPv4Stack=true -XX:+UseLargePages -XX:+UseFastAccessorMethods -Xrs -XX:+AggressiveOpts";
+	String ServerArgs = "-d64, -DJINTEGRA_NATIVE_MODE, -DJINTEGRA_COINIT_VALUE=0, -Dsun.io.useCanonCaches=false, -Djline.terminal=jline.UnsupportedTerminal, -XX:ThreadPriorityPolicy=42, -XX:CompileThreshold=1500, -XX:+TieredCompilation, -XX:TargetSurvivorRatio=90, -XX:MaxTenuringThreshold=15, -XX:+UnlockExperimentalVMOptions, -XX:+UseAdaptiveGCBoundary, -XX:+UseGCOverheadLimit, -XX:+UseBiasedLocking, -Xnoclassgc, -Xverify:none, -XX:UseSSE=8, -XX:+UseThreadPriorities, -Djava.net.preferIPv4Stack=true, -XX:+UseLargePages, -XX:+UseFastAccessorMethods, -Xrs, -XX:+AggressiveOpts";
 	String help = ("-=-=-=-=-=-=-|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="+newLine+"" +
 	               "  Option     |   Description"+newLine+"" +
 				   "-=-=-=-=-=-=-|-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="+newLine+"" +
@@ -65,4 +65,8 @@ public class Variables {
 	 boolean finishedBukkit=false;
 	 boolean finishedBungee=false;
 	 boolean finishedVanilla=false;
+	 boolean ErrorBukkit = false;
+	 boolean ErrorSpigot = false;
+	 boolean ErrorBungee = false;
+	 boolean ErrorVanilla = false;
 }

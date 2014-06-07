@@ -24,9 +24,7 @@ import com.CreepersHelp.Variables;
 public class FileParser {
 	static com.CreepersHelp.Variables  Variables  = new com.CreepersHelp.Variables();
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-	public static void Parser() throws IOException {
-		GetVanilla();
-		System.exit(0);
+	public static void Parser() throws IOException, InterruptedException {
 		Variables.URLNames[0] = "Craftbukit-Dev.jar";
 		Variables.URLNames[1] = "Spigot-Latest.jar";
 		Variables.URLNames[2] = "BungeeCord-Latest.jar";
@@ -36,6 +34,9 @@ public class FileParser {
 		Variables.Names[1] = new File("jar" + File.separator + "Spigot-Latest.jar");
 		Variables.Names[2] = new File("jar" + File.separator + "BungeeCord-Latest.jar");
 		Variables.Names[3] = new File("jar" + File.separator + "Vanilla-Latest.jar");
+		
+		BukkitSize();
+		System.exit(0);	
 		
 		if (Variables.Names[0].length() < Variables.SpigotSize) {
 			Variables.Names[0].delete();
@@ -121,18 +122,36 @@ public class FileParser {
 		if (VD1 == false) {
 			Variables.finishedVanilla = true;
 		}
-		while (!Variables.finishedBungee||!Variables.finishedSpigot||!Variables.finishedBukkit||!Variables.finishedVanilla) {}
+		while (!Variables.finishedBungee||!Variables.finishedSpigot||!Variables.finishedBukkit||!Variables.finishedVanilla) {
+			Thread.sleep(500);
+			System.out.println(".");
+			if ( Variables.ErrorBukkit|| Variables.ErrorSpigot|| Variables.ErrorBungee|| Variables.ErrorVanilla) {
+				System.out.println("FAILED");
+				System.exit(0);				
+			}
+		}
 	} 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-	public static int BukkitSize() throws IOException {
-	     URL url = new URL(Variables.Web1);
-	     URLConnection conn = url.openConnection();
+	public static int BukkitSize() {
+	     URL url = null;
+	     URLConnection conn = null;
+		try {
+			url = new URL(Variables.Web1);
+	     conn = url.openConnection();
 	    Variables.BukkitSize = conn.getContentLength();
-	     if (Variables.BukkitSize < 0) {
-	    	 //     System.out.println("Could not determine file size.");
-	     } else
-	//   System.out.println(BukkitSize);
-	     conn.getInputStream().close();
+	     if (Variables.BukkitSize <= 0) {
+	    	 System.out.println("Could not determine remote file size.");
+	    	 Variables.ErrorBukkit = true;
+	     }
+		}
+		catch (Exception e) {}
+		finally {
+			if (conn != null) {
+				try {
+					conn.getInputStream().close();
+				} catch (Exception g) {}
+			}
+		}
 	     return Variables.BukkitSize;
 	}
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=	
@@ -188,11 +207,13 @@ public class FileParser {
 		        	FileOutputStream fos = new FileOutputStream("jar" + File.separator + names);
 		        	fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		        	}  catch (UnknownHostException h) {
-		        		System.out.println("\nUnable to download CraftBukkit Minecraft"
+		        		System.out.println(Variables.newLine+"Unable to download CraftBukkit Minecraft"
 		        				+ " Server."
-		        				+ "\nPlease Check internet Connection.");
+		        				+ Variables.newLine+"Please Check internet Connection."+Variables.newLine
+		        				+ "UnknownHostException: Unable to do a DNS lookup.");
+		        		Variables.finishedBukkit = true;
 		        	}  catch (Exception k) {
-		        		//k.printStackTrace();
+		        		Variables.finishedBukkit = true;
 		        	}
 		        	/*Do code here*/
 		        	Variables.finishedBukkit = true;
@@ -213,11 +234,13 @@ public class FileParser {
 		        	FileOutputStream fos = new FileOutputStream("jar" + File.separator + names);
 		        	fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		        	}  catch (UnknownHostException h) {
-		        		System.out.println("\nUnable to download Spigot Minecraft"
+		        		System.out.println(Variables.newLine+"Unable to download Spigot Minecraft"
 		        				+ " Server."
-		        				+ "\nPlease Check internet Connection.");
+		        				+ Variables.newLine+"Please Check internet Connection."+Variables.newLine
+		        				+ "UnknownHostException: Unable to do a DNS lookup.");
+		        		Variables.finishedSpigot = true;
 		        	}  catch (Exception k) {
-		        		//k.printStackTrace();
+		        		Variables.finishedSpigot = true;
 		        	}
 		        	/*Do code here*/
 		        	Variables.finishedSpigot = true;
@@ -238,11 +261,13 @@ public class FileParser {
 		        	FileOutputStream fos = new FileOutputStream("jar" + File.separator + names);
 		        	fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		        	}  catch (UnknownHostException h) {
-		        		System.out.println("\nUnable to download BungeeCord Minecraft"
+		        		System.out.println(Variables.newLine+"Unable to download BungeeCord Minecraft"
 		        				+ " Server."
-		        				+ "\nPlease Check internet Connection.");
+		        				+ Variables.newLine+"Please Check internet Connection."+Variables.newLine
+		        				+ "UnknownHostException: Unable to do a DNS lookup.");
+		        		Variables.finishedBungee = true;
 		        	}  catch (Exception k) {
-		        		//k.printStackTrace();
+		        		Variables.finishedBungee = true;
 		        	}
 		        	/*Do code here*/
 		        	Variables.finishedBungee = true;
@@ -251,47 +276,32 @@ public class FileParser {
 		}
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private static void DownloadVanilla() {
-		    new Thread(new Runnable() {
-		        public void run() {
-		            int j = 0;
-		            
-		            BufferedInputStream ins = null;
-		        	String names="Vanilla.jar";
-		            FileOutputStream fout = null;
-		            try {
-		                ins = new BufferedInputStream(new URL(Variables.Web4).openStream());
-		                fout = new FileOutputStream("jar" + File.separator + names);
-
-		                final byte data[] = new byte[1024];
-		                int count;
-		                while ((count = ins.read(data, 0, 1024)) != -1) {
-		                    fout.write(data, 0, count);
-		                    if (j % 2 == 0) {
-		                    if (j >= 80) {
-		                       	System.out.print(Variables.newLine);
-		                       	j = 0;
-		                    }
-		                    System.out.print(".");
-		                    }
-		                    j ++;
-		                }
-		            } catch (FileNotFoundException e) {}
-		            catch (IOException e) {}
-		            finally {
-		                if (ins != null) {
-		                    try {
-								ins.close();
-							} catch (IOException e) {}
-		                }
-		                if (fout != null) {
-		                    try {
-								fout.close();
-							} catch (IOException e) {}
-		                }
-		            }
-			   }
-		    }).start();
-		}
+	    new Thread(new Runnable() {
+	        public void run() {
+	        	String Web=Variables.Web4;
+	        	String names="Vanilla-Latest.jar";
+	        	Variables.finishedVanilla = false;
+	        	/*Do code here*/
+	        	try {
+	            GetVanilla();
+	        	URL website = new URL(Web);
+	        	ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+	        	FileOutputStream fos = new FileOutputStream("jar" + File.separator + names);
+	        	fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+	        	}  catch (UnknownHostException h) {
+	        		System.out.println(Variables.newLine+"Unable to download Vanilla Minecraft"
+	        				+ " Server."
+	        				+ Variables.newLine+"Please Check internet Connection."+Variables.newLine
+	        				+ "UnknownHostException: Unable to do a DNS lookup.");
+	        		Variables.finishedVanilla = true;
+	        	}  catch (Exception k) {
+	        		Variables.finishedVanilla = true;
+	        	}
+	        	/*Do code here*/
+	        	Variables.finishedVanilla = true;
+		   }
+	    }).start();
+	}
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	public static void GetVanilla() throws IOException {
 		int i = 1;
@@ -310,12 +320,10 @@ public class FileParser {
             if (inputLine.toLowerCase().contains("},")) {
             	inputLine = inputLine.replaceAll("},", "}\n}");
             }
-            //System.out.println(inputLine);
+//            System.out.println(inputLine);
             i++;
         }
         in.close();
-        System.out.println(Ver);
-        //https://s3.amazonaws.com/Minecraft.Download/versions/"+Ver+"/minecraft_server."+Ver+".jar
         Variables.Web4 = "http://s3.amazonaws.com/Minecraft.Download/versions/"+Ver+"/minecraft_server."+Ver+".jar";
 	}
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
